@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    apache:
+        image: c4dt/apache:latest
+        container_name: apache
+        restart: unless-stopped
+        ports:
+            - 8080:80
+
+        build:
+            context: .
+            dockerfile: Dockerfile
