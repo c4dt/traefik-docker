@@ -8,7 +8,20 @@ RUN apt-get update; \
     ; apt-get clean
 
 # Disable CAS until we have it configured
-RUN a2dismod auth_cas
+#RUN a2dismod auth_cas
+
+RUN a2enmod headers
+RUN a2enmod rewrite
+
+COPY 400-showcase.conf /etc/apache2/sites-available/
+COPY 700-demo.conf /etc/apache2/sites-available/
+COPY 800-incubator.conf /etc/apache2/sites-available/
+
+RUN a2ensite 400-showcase
+RUN a2ensite 700-demo
+RUN a2ensite 800-incubator
+
+RUN useradd --create-home --user-group showcase
 
 STOPSIGNAL SIGWINCH
 
