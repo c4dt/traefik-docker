@@ -23,3 +23,4 @@ services:
             - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx:ro
             - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx-ho:ro
             - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx-datasets:ro
+            - /home/cgrigis/C4DT/Projects/demo:/var/www/oh19:ro

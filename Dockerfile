@@ -16,10 +16,12 @@ RUN a2enmod rewrite
 COPY 400-showcase.conf /etc/apache2/sites-available/
 COPY 700-demo.conf /etc/apache2/sites-available/
 COPY 800-incubator.conf /etc/apache2/sites-available/
+COPY 900-oh19.conf /etc/apache2/sites-available/
 
 RUN a2ensite 400-showcase
 RUN a2ensite 700-demo
 RUN a2ensite 800-incubator
+RUN a2ensite 900-oh19
 
 RUN useradd --create-home --user-group showcase
 
