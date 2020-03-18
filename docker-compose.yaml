@@ -16,11 +16,34 @@ services:
         image:          traefik:v2.1
         container_name: traefik
         restart:        unless-stopped
+        command:
+            - "--global.checkNewVersion=true"
+            - "--global.sendAnonymousUsage=false"
+
+            - "--log.level=DEBUG"
+
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.web-secure.address=:443"
+
+            - "--providers.docker=true"
+            - "--providers.docker.endpoint=tcp://socket-proxy:2375"
+            - "--providers.docker.exposedByDefault=false"
+
+            - "--providers.file=true"
+            - "--providers.file.filename=/etc/traefik/dynamic-conf.toml"
+            - "--providers.file.watch=true"
+
+            - "--certificatesResolvers.sample.acme.email=christian.grigis@epfl.ch"
+            - "--certificatesResolvers.sample.acme.storage=/etc/traefik/acme/acme.json"
+            - "--certificatesResolvers.sample.acme.httpChallenge.entryPoint=web"
+
+              # - "--api.dashboard=true"
+              # - "--api.insecure=true"
         ports:
             - 80:80
             - 443:443
+              # - 8080:8080
         volumes:
-            - ./traefik.toml:/etc/traefik/traefik.toml:ro
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
             - ./acme/acme.json:/etc/traefik/acme/acme.json
         extra_hosts:
