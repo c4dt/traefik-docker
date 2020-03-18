@@ -17,8 +17,8 @@ services:
         container_name: traefik
         restart:        unless-stopped
         ports:
-            - 8080:80
-            - 8443:443
+            - 80:80
+            - 443:443
         volumes:
             - ./traefik.toml:/etc/traefik/traefik.toml:ro
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
@@ -53,14 +53,74 @@ services:
             - /home/cgrigis/C4DT/Projects/demo:/var/www/oh19:ro
             - /home/cgrigis/C4DT/Projects/demo:/var/www/matrix:ro
 
+        labels:
+            - "traefik.enable=true"
+
+            - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+            - "traefik.http.routers.showcase-http.rule=Host(`showcase.c4dt.org`)"
+            - "traefik.http.routers.showcase-http.entryPoints=web"
+            - "traefik.http.routers.showcase-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.showcase-http.service=showcase"
+
+            - "traefik.http.routers.showcase.rule=Host(`showcase.c4dt.org`)"
+            - "traefik.http.routers.showcase.entryPoints=web-secure"
+            - "traefik.http.routers.showcase.service=showcase"
+            - "traefik.http.routers.showcase.tls=true"
+            - "traefik.http.routers.showcase.tls.certResolver=sample"
+
+            - "traefik.http.routers.incubator-http.rule=Host(`incubator.c4dt.org`)"
+            - "traefik.http.routers.incubator-http.entryPoints=web"
+            - "traefik.http.routers.incubator-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.incubator-http.service=incubator"
+
+            - "traefik.http.routers.incubator.rule=Host(`incubator.c4dt.org`)"
+            - "traefik.http.routers.incubator.entryPoints=web-secure"
+            - "traefik.http.routers.incubator.service=incubator"
+            - "traefik.http.routers.incubator.tls=true"
+            - "traefik.http.routers.incubator.tls.certResolver=sample"
+
+            - "traefik.http.routers.demo-http.rule=Host(`demo.c4dt.org`)"
+            - "traefik.http.routers.demo-http.entryPoints=web"
+            - "traefik.http.routers.demo-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.demo-http.service=demo"
+
+            - "traefik.http.routers.demo.rule=Host(`demo.c4dt.org`)"
+            - "traefik.http.routers.demo.entryPoints=web-secure"
+            - "traefik.http.routers.demo.service=demo"
+            - "traefik.http.routers.demo.tls=true"
+            - "traefik.http.routers.demo.tls.certResolver=sample"
+
+            - "traefik.http.routers.oh19-http.rule=Host(`oh19.c4dt.org`)"
+            - "traefik.http.routers.oh19-http.entryPoints=web"
+            - "traefik.http.routers.oh19-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.oh19-http.service=oh19"
+
+            - "traefik.http.routers.oh19.rule=Host(`oh19.c4dt.org`)"
+            - "traefik.http.routers.oh19.entryPoints=web-secure"
+            - "traefik.http.routers.oh19.service=oh19"
+            - "traefik.http.routers.oh19.tls=true"
+            - "traefik.http.routers.oh19.tls.certResolver=sample"
+
+            - "traefik.http.routers.matrix-http.rule=Host(`matrix.c4dt.org`)"
+            - "traefik.http.routers.matrix-http.entryPoints=web"
+            - "traefik.http.routers.matrix-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.matrix-http.service=matrix"
+
+            - "traefik.http.routers.matrix.rule=Host(`matrix.c4dt.org`)"
+            - "traefik.http.routers.matrix.entryPoints=web-secure"
+            - "traefik.http.routers.matrix.service=matrix"
+            - "traefik.http.routers.matrix.tls=true"
+            - "traefik.http.routers.matrix.tls.certResolver=sample"
+
+            - "traefik.http.services.showcase.loadbalancer.server.scheme=http"
+            - "traefik.http.services.incubator.loadbalancer.server.scheme=http"
+            - "traefik.http.services.demo.loadbalancer.server.scheme=http"
+            - "traefik.http.services.oh19.loadbalancer.server.scheme=http"
+            - "traefik.http.services.matrix.loadbalancer.server.scheme=http"
+
         networks:
-            proxy:
-                aliases:
-                    - showcase
-                    - incubator
-                    - demo
-                    - oh19
-                    - matrix
+            - proxy
 
 networks:
     proxy:
