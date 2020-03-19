@@ -10,11 +10,11 @@ RUN apt-get update; \
 RUN a2enmod headers
 RUN a2enmod rewrite
 
-COPY 100-matrix.conf /etc/apache2/sites-available/
-COPY 400-showcase.conf /etc/apache2/sites-available/
-COPY 700-demo.conf /etc/apache2/sites-available/
-COPY 800-incubator.conf /etc/apache2/sites-available/
-COPY 900-oh19.conf /etc/apache2/sites-available/
+COPY Apache/100-matrix.conf /etc/apache2/sites-available/
+COPY Apache/400-showcase.conf /etc/apache2/sites-available/
+COPY Apache/700-demo.conf /etc/apache2/sites-available/
+COPY Apache/800-incubator.conf /etc/apache2/sites-available/
+COPY Apache/900-oh19.conf /etc/apache2/sites-available/
 
 RUN a2ensite 100-matrix
 RUN a2ensite 400-showcase

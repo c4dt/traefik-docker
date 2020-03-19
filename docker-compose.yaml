@@ -58,7 +58,7 @@ services:
     apache:
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: Apache/Dockerfile
 
         image: c4dt/apache:latest
         container_name: apache
