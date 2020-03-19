@@ -20,10 +20,12 @@ services:
             - "--global.checkNewVersion=true"
             - "--global.sendAnonymousUsage=false"
 
-            - "--log.level=DEBUG"
+            - "--log.level=INFO"
 
             - "--entrypoints.web.address=:80"
             - "--entrypoints.web-secure.address=:443"
+            - "--entrypoints.synapse-fed.address=:8448"
+              # - "--entrypoints.demo-stainless.address=:9003"
 
             - "--providers.docker=true"
             - "--providers.docker.endpoint=tcp://socket-proxy:2375"
@@ -42,6 +44,8 @@ services:
         ports:
             - 80:80
             - 443:443
+            - 8448:8448
+              # - 9003:9003
               # - 8080:8080
         volumes:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
@@ -61,17 +65,17 @@ services:
         restart: unless-stopped
 
         volumes:
-            # FIXME adjust paths
-            - /home/cgrigis/C4DT/Projects/showcase:/var/www/showcase:ro
-            - /home/cgrigis/C4DT/Projects/incubator:/var/www/incubator:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/demo:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/omniledger:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/stainless:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx-ho:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/drynx-datasets:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/oh19:ro
-            - /home/cgrigis/C4DT/Projects/demo:/var/www/matrix:ro
+            - /home/showcase/showcase:/var/www/showcase:ro
+            - /home/incubator/www:/var/www/incubator:ro
+            - /home/demo/www:/var/www/demo:ro
+            - /home/omniledger/www:/var/www/omniledger:ro
+            - /home/omniledger:/var/www/omniledger-cache:ro
+            - /home/stainless/www:/var/www/stainless:ro
+            - /home/drynx/drynx:/var/www/drynx:ro
+            - /home/drynx-ho/www:/var/www/drynx-ho:ro
+            - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
+            - /home/oh19/www:/var/www/oh19:ro
+            - /home/matrix/www:/var/www/matrix:ro
 
         labels:
             - "traefik.enable=true"
@@ -88,6 +92,13 @@ services:
             - "traefik.http.routers.site-https.service=httpd"
             - "traefik.http.routers.site-https.tls=true"
             - "traefik.http.routers.site-https.tls.certResolver=sample"
+
+            - "traefik.http.routers.cas-login.rule=Host(`demo.c4dt.org`) && Path(`/omniledger/api/v0/cas/login`)"
+            - "traefik.http.routers.cas-login.entryPoints=web-secure"
+            - "traefik.http.routers.cas-login.service=httpd"
+            - "traefik.http.routers.cas-login.priority=2000"
+            - "traefik.http.routers.cas-login.tls=true"
+            - "traefik.http.routers.cas-login.tls.certResolver=sample"
 
             - "traefik.http.services.httpd.loadbalancer.server.scheme=http"
 
