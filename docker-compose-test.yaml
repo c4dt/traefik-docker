@@ -1,0 +1,109 @@
+version: '3'
+
+services:
+    socket-proxy:
+        image:          tecnativa/docker-socket-proxy
+        container_name: socket-proxy
+        restart:        unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        environment:
+            CONTAINERS:     1
+        networks:
+            - proxy
+
+    traefik:
+        image:          traefik:v2.1
+        container_name: traefik
+        restart:        unless-stopped
+        command:
+            - "--global.checkNewVersion=true"
+            - "--global.sendAnonymousUsage=false"
+
+            - "--log.level=DEBUG"
+
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.web-secure.address=:443"
+            - "--entrypoints.synapse-fed.address=:8448"
+              # - "--entrypoints.demo-stainless.address=:9003"
+
+            - "--providers.docker=true"
+            - "--providers.docker.endpoint=tcp://socket-proxy:2375"
+            - "--providers.docker.exposedByDefault=false"
+
+            - "--providers.file=true"
+            - "--providers.file.filename=/etc/traefik/dynamic-conf.toml"
+            - "--providers.file.watch=true"
+
+            - "--certificatesResolvers.sample.acme.email=christian.grigis@epfl.ch"
+            - "--certificatesResolvers.sample.acme.storage=/etc/traefik/acme/acme.json"
+            - "--certificatesResolvers.sample.acme.httpChallenge.entryPoint=web"
+
+              # - "--api.dashboard=true"
+              # - "--api.insecure=true"
+        ports:
+            - 80:80
+            - 443:443
+            - 8448:8448
+              # - 9003:9003
+              # - 8080:8080
+        volumes:
+            - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
+            - ./acme/acme.json:/etc/traefik/acme/acme.json
+        extra_hosts:
+            - "docker-host:172.27.0.1"
+        networks:
+            - proxy
+
+    apache:
+        build:
+            context: .
+            dockerfile: Apache/Dockerfile
+
+        image: c4dt/apache:latest
+        container_name: apache
+        restart: unless-stopped
+
+        volumes:
+            - ./Homes/test:/var/www/showcase:ro
+            - ./Homes/test:/var/www/incubator:ro
+            - ./Homes/test:/var/www/demo:ro
+            - ./Homes/test:/var/www/omniledger:ro
+            - ./Homes/test:/var/www/stainless:ro
+            - ./Homes/test:/var/www/drynx:ro
+            - ./Homes/test:/var/www/drynx-ho:ro
+            - ./Homes/test:/var/www/drynx-datasets:ro
+            - ./Homes/test:/var/www/oh19:ro
+            - ./Homes/test:/var/www/matrix:ro
+
+        labels:
+            - "traefik.enable=true"
+
+            - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+            - "traefik.http.routers.site-http.rule=HostRegexp(`{subdomain:showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
+            - "traefik.http.routers.site-http.entryPoints=web"
+            - "traefik.http.routers.site-http.middlewares=redirect-to-https"
+            - "traefik.http.routers.site-http.service=httpd"
+
+            - "traefik.http.routers.site-https.rule=HostRegexp(`{subdomain:showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
+            - "traefik.http.routers.site-https.entryPoints=web-secure"
+            - "traefik.http.routers.site-https.service=httpd"
+            - "traefik.http.routers.site-https.tls=true"
+            - "traefik.http.routers.site-https.tls.certResolver=sample"
+
+            - "traefik.http.routers.cas-login.rule=Host(`demo.c4dt.org`) && Path(`/omniledger/api/v0/cas/login`)"
+            - "traefik.http.routers.cas-login.entryPoints=web-secure"
+            - "traefik.http.routers.cas-login.service=httpd"
+            - "traefik.http.routers.cas-login.priority=2000"
+            - "traefik.http.routers.cas-login.tls=true"
+            - "traefik.http.routers.cas-login.tls.certResolver=sample"
+
+            - "traefik.http.services.httpd.loadbalancer.server.scheme=http"
+
+        networks:
+            - proxy
+
+networks:
+    proxy:
+        external: true
