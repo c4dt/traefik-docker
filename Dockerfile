@@ -7,9 +7,6 @@ RUN apt-get update; \
     libapache2-mod-auth-cas \
     ; apt-get clean
 
-# Disable CAS until we have it configured
-#RUN a2dismod auth_cas
-
 RUN a2enmod headers
 RUN a2enmod rewrite
 
