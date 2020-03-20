@@ -5,6 +5,8 @@ RUN apt-get update; \
     apache2 \
     libapache2-mod-wsgi-py3 \
     libapache2-mod-auth-cas \
+    python3-venv \
+    make \
     ; apt-get clean
 
 RUN a2enmod headers
