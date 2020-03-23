@@ -9,6 +9,18 @@ RUN apt-get update; \
     make \
     ; apt-get clean
 
+# Install mod-auth-cas from source until the fix is integrated upstream
+RUN apt-get install --no-install-recommends --yes \
+    git \
+    apache2-dev \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    libpcre3-dev
+RUN git clone https://github.com/c4dt/mod_auth_cas -b fix-ticket-format && \
+    cd mod_auth_cas && \
+    autoreconf -ivf && \
+    ./configure && make install
+
 RUN a2enmod headers
 RUN a2enmod rewrite
 
