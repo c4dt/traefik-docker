@@ -71,7 +71,7 @@ services:
             - /home/omniledger/www:/var/www/omniledger:ro
             - /home/omniledger:/var/www/omniledger-cache:ro
             - /home/stainless/www:/var/www/stainless:ro
-            - /home/drynx/drynx:/var/www/drynx:ro
+            - /home/drynx/www:/var/www/drynx:ro
             - /home/drynx-ho/www:/var/www/drynx-ho:ro
             - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
             - /home/oh19/www:/var/www/oh19:ro
