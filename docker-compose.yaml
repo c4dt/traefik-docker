@@ -25,7 +25,7 @@ services:
             - "--entrypoints.web.address=:80"
             - "--entrypoints.web-secure.address=:443"
             - "--entrypoints.synapse-fed.address=:8448"
-              # - "--entrypoints.demo-stainless.address=:9003"
+            - "--entrypoints.demo-stainless.address=:9003"
 
             - "--providers.docker=true"
             - "--providers.docker.endpoint=tcp://socket-proxy:2375"
@@ -45,7 +45,7 @@ services:
             - 80:80
             - 443:443
             - 8448:8448
-              # - 9003:9003
+            - 9003:9003
               # - 8080:8080
         volumes:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
