@@ -33,7 +33,7 @@ The steps to follow in order to update the configuration are:
 * If the apache docker is affected:
 ```
 $ docker-compose build
-$ docker-compose push`
+$ docker-compose push
 ```
 * Log into `c4dtsrv1`, user `traefik`.
 ```
