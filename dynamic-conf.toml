@@ -47,6 +47,14 @@
       [http.routers.demo-drynx-leader.tls]
         certResolver = "sample"
 
+    [http.routers.indie-pocket]
+      rule = "Host(`indie.c4dt.org`)"
+      service = "indie-pocket"
+      entryPoints = ["web-secure"]
+      priority = 1000
+      [http.routers.indie-pocket.tls]
+        certResolver = "sample"
+
   [http.middlewares]
 
     [http.middlewares.strip-omniledger.stripPrefix]
@@ -79,3 +87,9 @@
       [http.services.demo-drynx-leader.loadBalancer]
         [[http.services.demo-drynx-leader.loadBalancer.servers]]
           url = "http://docker-host:4321"
+
+    # LauzHack server
+    [http.services.indie-pocket]
+      [http.services.indie-pocket.loadBalancer]
+        [[http.services.indie-pocket.loadBalancer.servers]]
+          url = "http://docker-host:5555"
