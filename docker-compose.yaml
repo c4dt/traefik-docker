@@ -76,8 +76,8 @@ services:
             - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
             - /home/oh19/www:/var/www/oh19:ro
             - /home/matrix/www:/var/www/matrix:ro
-            - /usr/share/jitsi-meet:/var/www/jitsi-meet:ro
-            - /etc/jitsi/meet/jitsi.c4dt.org-config.js:/var/www/jitsi-meet-config/config.js:ro
+            - /home/jitsi/usr_share_jitsi-meet:/var/www/jitsi-meet:ro
+            - /home/jitsi/etc_jitsi_meet/jitsi.c4dt.org-config.js:/var/www/jitsi-meet-config/config.js:ro
 
         labels:
             - "traefik.enable=true"

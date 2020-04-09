@@ -23,6 +23,7 @@ RUN git clone https://github.com/c4dt/mod_auth_cas -b fix-ticket-format && \
 
 RUN a2enmod headers
 RUN a2enmod rewrite
+RUN a2enmod include
 
 RUN useradd --create-home --user-group showcase
 
