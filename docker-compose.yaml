@@ -76,8 +76,8 @@ services:
             - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
             - /home/oh19/www:/var/www/oh19:ro
             - /home/matrix/www:/var/www/matrix:ro
-            - /etc/jitsi/meet:/etc/jitsi/meet:ro
-              #- /usr/share/jitsi-meet:/var/www/jitsi-meet:ro
+            - /usr/share/jitsi-meet:/var/www/jitsi-meet:ro
+            - /etc/jitsi/meet/jitsi.c4dt.org-config.js:/var/www/jitsi-meet-config/config.js:ro
 
         labels:
             - "traefik.enable=true"
@@ -89,7 +89,7 @@ services:
             - "traefik.http.routers.site-http.middlewares=redirect-to-https"
             - "traefik.http.routers.site-http.service=httpd"
 
-            - "traefik.http.routers.site-https.rule=HostRegexp(`{subdomain:hitsi|showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
+            - "traefik.http.routers.site-https.rule=HostRegexp(`{subdomain:jitsi|showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
             - "traefik.http.routers.site-https.entryPoints=web-secure"
             - "traefik.http.routers.site-https.service=httpd"
             - "traefik.http.routers.site-https.tls=true"

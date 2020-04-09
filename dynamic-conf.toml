@@ -47,6 +47,14 @@
       [http.routers.demo-drynx-leader.tls]
         certResolver = "sample"
 
+    [http.routers.jitsi-bind]
+      rule = "Host(`jitsi.c4dt.org`) && Path(`/http-bind`)"
+      service = "jitsi-bind"
+      entryPoints = ["web-secure"]
+      priority = 1000
+      [http.routers.jitsi-bind.tls]
+        certResolver = "sample"
+
     [http.routers.indie-pocket]
       rule = "Host(`indie.c4dt.org`)"
       service = "indie-pocket"
@@ -95,6 +103,12 @@
       [http.services.demo-drynx-leader.loadBalancer]
         [[http.services.demo-drynx-leader.loadBalancer.servers]]
           url = "http://docker-host:4321"
+
+    # Jitsi http-bind
+    [http.services.jitsi-bind]
+      [http.services.jitsi-bind.loadBalancer]
+        [[http.services.jitsi-bind.loadBalancer.servers]]
+          url = "http://docker-host:5280"
 
     # LauzHack server
     [http.services.indie-pocket]
