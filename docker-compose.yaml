@@ -51,7 +51,7 @@ services:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
             - ./acme/acme.json:/etc/traefik/acme/acme.json
         extra_hosts:
-            - "docker-host:172.27.0.1"
+            - "docker-host:172.20.0.1"
         networks:
             - proxy
 
