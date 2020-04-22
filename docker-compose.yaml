@@ -46,7 +46,7 @@ services:
             - 443:443
             - 8448:8448
             - 9003:9003
-            - 8080:8080  # dashboard
+            - 127.0.0.1:8080:8080  # dashboard
         volumes:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
             - ./acme/acme.json:/etc/traefik/acme/acme.json
