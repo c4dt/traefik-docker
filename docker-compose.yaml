@@ -13,7 +13,7 @@ services:
             - proxy
 
     traefik:
-        image:          traefik:v2.1
+        image:          traefik:v2.2
         container_name: traefik
         restart:        unless-stopped
         command:
@@ -39,14 +39,14 @@ services:
             - "--certificatesResolvers.sample.acme.storage=/etc/traefik/acme/acme.json"
             - "--certificatesResolvers.sample.acme.httpChallenge.entryPoint=web"
 
-              # - "--api.dashboard=true"
-              # - "--api.insecure=true"
+            - "--api.dashboard=true"
+            - "--api.insecure=true"
         ports:
             - 80:80
             - 443:443
             - 8448:8448
             - 9003:9003
-              # - 8080:8080
+            - 8080:8080  # dashboard
         volumes:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
             - ./acme/acme.json:/etc/traefik/acme/acme.json
@@ -76,20 +76,18 @@ services:
             - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
             - /home/oh19/www:/var/www/oh19:ro
             - /home/matrix/www:/var/www/matrix:ro
-            - /home/jitsi/usr_share_jitsi-meet:/var/www/jitsi-meet:ro
-            - /home/jitsi/etc_jitsi_meet/jitsi.c4dt.org-config.js:/var/www/jitsi-meet-config/config.js:ro
 
         labels:
             - "traefik.enable=true"
 
             - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
-            - "traefik.http.routers.site-http.rule=HostRegexp(`{subdomain:jitsi|showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
+            - "traefik.http.routers.site-http.rule=HostRegexp(`{subdomain:showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
             - "traefik.http.routers.site-http.entryPoints=web"
             - "traefik.http.routers.site-http.middlewares=redirect-to-https"
             - "traefik.http.routers.site-http.service=httpd"
 
-            - "traefik.http.routers.site-https.rule=HostRegexp(`{subdomain:jitsi|showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
+            - "traefik.http.routers.site-https.rule=HostRegexp(`{subdomain:showcase|incubator|demo|oh19|matrix}.c4dt.org`)"
             - "traefik.http.routers.site-https.entryPoints=web-secure"
             - "traefik.http.routers.site-https.service=httpd"
             - "traefik.http.routers.site-https.tls=true"
