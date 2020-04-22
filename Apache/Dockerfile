@@ -28,14 +28,12 @@ RUN a2enmod include
 RUN useradd --create-home --user-group showcase
 
 COPY Apache/100-matrix.conf /etc/apache2/sites-available/
-COPY Apache/200-jitsi.conf /etc/apache2/sites-available/
 COPY Apache/400-showcase.conf /etc/apache2/sites-available/
 COPY Apache/700-demo.conf /etc/apache2/sites-available/
 COPY Apache/800-incubator.conf /etc/apache2/sites-available/
 COPY Apache/900-oh19.conf /etc/apache2/sites-available/
 
 RUN a2ensite 100-matrix
-RUN a2ensite 200-jitsi
 RUN a2ensite 400-showcase
 RUN a2ensite 700-demo
 RUN a2ensite 800-incubator
