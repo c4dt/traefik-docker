@@ -39,14 +39,14 @@ services:
             - "--certificatesResolvers.sample.acme.storage=/etc/traefik/acme/acme.json"
             - "--certificatesResolvers.sample.acme.httpChallenge.entryPoint=web"
 
-              # - "--api.dashboard=true"
-              # - "--api.insecure=true"
+            - "--api.dashboard=true"
+            - "--api.insecure=true"
         ports:
             - 80:80
             - 443:443
             - 8448:8448
             - 9003:9003
-              # - 8080:8080
+            - 8080:8080  # dashboard
         volumes:
             - ./dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
             - ./acme/acme.json:/etc/traefik/acme/acme.json
