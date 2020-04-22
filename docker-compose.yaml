@@ -13,7 +13,7 @@ services:
             - proxy
 
     traefik:
-        image:          traefik:v2.1
+        image:          traefik:v2.2
         container_name: traefik
         restart:        unless-stopped
         command:
