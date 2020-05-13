@@ -35,7 +35,7 @@ services:
             - "--providers.file.filename=/etc/traefik/dynamic-conf.toml"
             - "--providers.file.watch=true"
 
-            - "--certificatesResolvers.sample.acme.email=christian.grigis@epfl.ch"
+            - "--certificatesResolvers.sample.acme.email=c4dt-services@listes.epfl.ch"
             - "--certificatesResolvers.sample.acme.storage=/etc/traefik/acme/acme.json"
             - "--certificatesResolvers.sample.acme.httpChallenge.entryPoint=web"
 
