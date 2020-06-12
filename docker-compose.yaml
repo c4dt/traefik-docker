@@ -69,6 +69,7 @@ services:
             - /home/incubator/www:/var/www/incubator:ro
             - /home/demo/www:/var/www/demo:ro
             - /home/omniledger/www:/var/www/omniledger:ro
+            - /home/ol-explorer/www:/var/www/ol-explorer:ro
             - /home/omniledger:/var/www/omniledger-cache:ro
             - /home/stainless/www:/var/www/stainless:ro
             - /home/drynx/www:/var/www/drynx:ro
