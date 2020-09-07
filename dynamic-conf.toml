@@ -39,14 +39,6 @@
       [http.routers.demo-omniledger-api.tls]
         certResolver = "sample"
 
-    [http.routers.demo-drynx-leader]
-      rule = "Host(`demo.c4dt.org`) && Path(`/drynx/leader`)"
-      service = "demo-drynx-leader"
-      entryPoints = ["web-secure"]
-      priority = 1000
-      [http.routers.demo-drynx-leader.tls]
-        certResolver = "sample"
-
     [http.routers.indie-pocket]
       rule = "Host(`indie.c4dt.org`)"
       service = "indie-pocket"
@@ -89,12 +81,6 @@
       [http.services.demo-omniledger-api.loadBalancer]
         [[http.services.demo-omniledger-api.loadBalancer.servers]]
           url = "http://docker-host:4201"
-
-    # demo Drynx leader
-    [http.services.demo-drynx-leader]
-      [http.services.demo-drynx-leader.loadBalancer]
-        [[http.services.demo-drynx-leader.loadBalancer.servers]]
-          url = "http://docker-host:4321"
 
     # LauzHack server
     [http.services.indie-pocket]
