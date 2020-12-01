@@ -75,6 +75,8 @@ services:
             - /home/drynx/www:/var/www/drynx:ro
             - /home/drynx-ho/www:/var/www/drynx-ho:ro
             - /home/drynx/locals/datasets:/var/www/drynx-datasets:ro
+            - /home/spindle/www:/var/www/spindle:ro
+            - /home/spindle/datasets:/var/www/spindle-datasets:ro
             - /home/oh19/www:/var/www/oh19:ro
             - /home/matrix/www:/var/www/matrix:ro
 
