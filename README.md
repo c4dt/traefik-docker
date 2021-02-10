@@ -1,3 +1,5 @@
+# **NOTE**: This repository is now obsolete. Changes to the `traefik` configuration must be done in https://github.com/c4dt/ansible-config and deployed with Ansible.
+
 # Traefik setup
 
 This repository contains the [traefik](https://docs.traefik.io/) setup for the C4DT services.
